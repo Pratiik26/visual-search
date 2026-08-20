@@ -6,9 +6,9 @@ This guide provides everything needed for frontend and backend engineers to inte
 
 ## ⚡ Quick Start for Developers
 
-- **API Base URL**: `http://localhost:8000` (or your deployed server domain)
-- **Interactive Swagger Docs**: `http://localhost:8000/docs`
-- **Alternative ReDoc**: `http://localhost:8000/redoc`
+- **API Base URL**: `http://127.0.0.1:8080` (or your deployed server domain)
+- **Interactive Swagger Docs**: [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs)
+- **Alternative ReDoc**: [http://127.0.0.1:8080/redoc](http://127.0.0.1:8080/redoc)
 - **CORS Status**: Enabled for all origins (`*`) — you can call this API directly from any browser client without CORS proxy issues.
 
 ---
@@ -18,7 +18,7 @@ This guide provides everything needed for frontend and backend engineers to inte
 ### `POST /api/v1/extract-metadata`
 Upload an image of a diamond ring to instantly extract detailed visual attributes, zero-shot classification, and bounding box coordinates.
 
-- **URL**: `http://localhost:8000/api/v1/extract-metadata`
+- **URL**: `http://127.0.0.1:8080/api/v1/extract-metadata`
 - **Method**: `POST`
 - **Content-Type**: `multipart/form-data`
 
@@ -95,7 +95,7 @@ Upload an image of a diamond ring to instantly extract detailed visual attribute
 ### `POST /api/v1/metadata/extract-url`
 Extract metadata from a remote image URL or base64 data string.
 
-- **URL**: `http://localhost:8000/api/v1/metadata/extract-url`
+- **URL**: `http://localhost:8080/api/v1/metadata/extract-url`
 - **Method**: `POST`
 - **Content-Type**: `application/json`
 
@@ -113,7 +113,7 @@ Extract metadata from a remote image URL or base64 data string.
 ### `POST /api/v1/search/image`
 Extracts metadata AND returns ranked catalog matches.
 
-- **URL**: `http://localhost:8000/api/v1/search/image`
+- **URL**: `http://localhost:8080/api/v1/search/image`
 - **Method**: `POST`
 - **Content-Type**: `multipart/form-data`
 - **Parameters**:
@@ -152,7 +152,7 @@ Extracts metadata AND returns ranked catalog matches.
 
       try {
         output.innerText = "Extracting metadata...";
-        const response = await fetch("http://localhost:8000/api/v1/extract-metadata", {
+        const response = await fetch("http://localhost:8080/api/v1/extract-metadata", {
           method: "POST",
           body: formData,
         });
@@ -195,7 +195,7 @@ export default function RingMetadataUploader({ onMetadataExtracted }) {
     formData.append("file", file);
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/extract-metadata", {
+      const res = await fetch("http://localhost:8080/api/v1/extract-metadata", {
         method: "POST",
         body: formData,
       });
@@ -252,7 +252,7 @@ async function extractRingMetadata(imageFilePath) {
   const form = new FormData();
   form.append('file', fs.createReadStream(imageFilePath));
 
-  const response = await axios.post('http://localhost:8000/api/v1/extract-metadata', form, {
+  const response = await axios.post('http://localhost:8080/api/v1/extract-metadata', form, {
     headers: form.getHeaders(),
   });
 
@@ -272,7 +272,7 @@ extractRingMetadata('./sample_ring.jpg')
 ```python
 import requests
 
-url = "http://localhost:8000/api/v1/extract-metadata"
+url = "http://localhost:8080/api/v1/extract-metadata"
 files = {"file": open("sample_ring.jpg", "rb")}
 
 response = requests.post(url, files=files)
@@ -290,7 +290,7 @@ print(f"Prong Setting: {data['metadata']['prong_setting']}")
 ### 5. cURL Command (Terminal Test)
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/extract-metadata" \
+curl -X POST "http://localhost:8080/api/v1/extract-metadata" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@sample_ring.jpg;type=image/jpeg"
@@ -311,8 +311,8 @@ curl -X POST "http://localhost:8000/api/v1/extract-metadata" \
    ```
    Or using Uvicorn directly:
    ```bash
-   uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+   uvicorn backend.main:app --host 0.0.0.0 --port 8080 --reload
    ```
 
 3. **Open the Documentation**:
-   Visit `http://localhost:8000/docs` in your browser.
+   Visit `http://localhost:8080/docs` in your browser.
