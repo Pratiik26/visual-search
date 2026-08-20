@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA — AI Diamond Ring Visual Search (Grown Brilliance Engine)</title>
+  <meta name="description" content="Haute Joaillerie AI visual search engine for diamond engagement rings with multi-point object target framing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Ambient Luxury Lights -->
+  <div class="ambient-glow glow-top"></div>
+  <div class="ambient-glow glow-bottom"></div>
+
+  <!-- Navigation -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-gem">💎</span>
+        <div class="brand-info">
+          <span class="brand-name">AURA DIAMONDS</span>
+          <span class="brand-tag">Grown Brilliance Visual Recognition Engine</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="catalog-indicator">
+          <span class="pulse-dot"></span>
+          <span id="catalog-count-pill">Catalog: 1,887 Ring Models (7,519 Views)</span>
+        </div>
+        <a href="/docs" target="_blank" class="api-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          API Docs (Swagger)
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main App Layout -->
+  <main class="app-container">
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+      <div class="hero-chip">AI MULTI-ATTRIBUTE RECOGNITION</div>
+      <h1 class="hero-heading">Visual Search for <span class="gold-gradient">Diamond Engagement Rings</span></h1>
+      <p class="hero-description">
+        Upload any diamond ring photo. Click on any detected object point or adjust the bounding frame to isolate a specific ring and match exact shape, metal tone, and setting from the catalog.
+      </p>
+    </section>
+
+    <!-- App Studio Grid -->
+    <div class="studio-grid">
+      <!-- Left Panel: Uploader, Interactive Target Canvas & Samples -->
+      <aside class="studio-sidebar glass-card">
+        <div class="sidebar-header">
+          <h2>Ring Image Upload</h2>
+          <button id="clear-search-btn" class="link-btn">Clear</button>
+        </div>
+
+        <!-- Interactive Drag & Drop Box / Image Canvas -->
+        <div class="upload-dropzone" id="upload-dropzone">
+          <input type="file" id="ring-file-input" accept="image/jpeg,image/png,image/webp" hidden>
+          
+          <!-- Idle State -->
+          <div class="dropzone-idle" id="dropzone-idle">
+            <div class="icon-circle">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            </div>
+            <div class="dropzone-text-main"><strong>Upload ring photo</strong> or drag here</div>
+            <div class="dropzone-text-sub">JPG, PNG, or WebP • Multi-object & hands supported</div>
+          </div>
+
+          <!-- Active Preview with Interactive Target Frame -->
+          <div class="dropzone-active-preview" id="dropzone-preview" style="display: none;">
+            <div class="preview-viewport" id="preview-viewport">
+              <img id="ring-preview-img" src="" alt="Query Image">
+              
+              <!-- Interactive Adjustable Target Crop Frame -->
+              <div id="target-crop-frame" class="target-crop-frame" style="display: none;">
+                <div class="crop-badge" id="crop-badge">🎯 Target Object</div>
+                <div class="crop-handle handle-tl" data-handle="tl"></div>
+                <div class="crop-handle handle-tr" data-handle="tr"></div>
+                <div class="crop-handle handle-bl" data-handle="bl"></div>
+                <div class="crop-handle handle-br" data-handle="br"></div>
+                <div class="crop-edge edge-t" data-handle="t"></div>
+                <div class="crop-edge edge-b" data-handle="b"></div>
+                <div class="crop-edge edge-l" data-handle="l"></div>
+                <div class="crop-edge edge-r" data-handle="r"></div>
+              </div>
+            </div>
+            <button id="remove-img-btn" class="remove-btn" title="Remove image">✕</button>
+          </div>
+        </div>
+
+        <!-- Target Frame Control Toolbar -->
+        <div class="target-frame-control-panel" id="target-frame-panel" style="display: none;">
+          <div class="target-panel-header">
+            <span class="target-panel-title">🎯 Auto-Detected Diamond Focus:</span>
+            <span class="target-subtext">Drag frame handles to adjust focus if desired</span>
+          </div>
+
+          <div class="frame-actions-bar">
+            <button id="apply-frame-search-btn" class="gold-action-btn pulse-glow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              Search Focused Frame
+            </button>
+            <button id="reset-frame-btn" class="secondary-btn">
+              ↺ Full Ring
+            </button>
+          </div>
+        </div>
+
+
+        <!-- Quick 1-Click Test Samples -->
+        <div class="quick-samples">
+          <label class="panel-label">1-Click Inspiration Samples:</label>
+          <div class="sample-rings-row">
+            <button class="sample-card" data-url="https://overnightmountings.s3.amazonaws.com/82844.cu.jpg">
+              <img src="https://overnightmountings.s3.amazonaws.com/82844.cu.jpg" alt="Cushion 3-Stone">
+              <span>Cushion 3-Stone</span>
+            </button>
+            <button class="sample-card" data-url="https://overnightmountings.s3.amazonaws.com/85121.jpg">
+              <img src="https://overnightmountings.s3.amazonaws.com/85121.jpg" alt="Round Solitaire">
+              <span>Round Solitaire</span>
+            </button>
+            <button class="sample-card" data-url="https://overnightmountings.s3.amazonaws.com/84842.alt.jpg">
+              <img src="https://overnightmountings.s3.amazonaws.com/84842.alt.jpg" alt="Yellow Pave">
+              <span>Yellow Pave</span>
+            </button>
+            <button class="sample-card" data-url="https://overnightmountings.s3.amazonaws.com/51157-E.jpg">
+              <img src="https://overnightmountings.s3.amazonaws.com/51157-E.jpg" alt="Oval Hidden Halo">
+              <span>Oval Halo</span>
+            </button>
+          </div>
+        </div>
+
+        <button id="trigger-search-btn" class="gold-action-btn full-width" disabled>
+          <span>🔍</span>
+          Search Diamond Catalog
+        </button>
+      </aside>
+
+      <!-- Right Panel: AI Recognition HUD, Filter Chips & Visual Results Grid -->
+      <section class="studio-results">
+        
+        <!-- Grown Brilliance AI Recognition & Interactive Refinement HUD -->
+        <div class="recognition-hud glass-card" id="recognition-hud" style="display: none;">
+          <div class="hud-top-bar">
+            <h3 class="hud-gold-title">✨ GROWN BRILLIANCE AI RECOGNITION (CLICK TO REFINE)</h3>
+          </div>
+
+          <div class="hud-chips-grid">
+            <div class="hud-chip-card">
+              <label class="hud-chip-label">💎 DIAMOND SHAPE</label>
+              <div class="hud-select-wrapper">
+                <select id="hud-shape-select" class="hud-select-native">
+                  <option value="Emerald">Emerald</option>
+                  <option value="Cushion">Cushion</option>
+                  <option value="Round">Round</option>
+                  <option value="Oval">Oval</option>
+                  <option value="Princess">Princess</option>
+                  <option value="Radiant">Radiant</option>
+                  <option value="Pear">Pear</option>
+                  <option value="Marquise">Marquise</option>
+                  <option value="Asscher">Asscher</option>
+                  <option value="Heart">Heart</option>
+                </select>
+                <span class="hud-dropdown-arrow">▾</span>
+              </div>
+            </div>
+
+            <div class="hud-chip-card">
+              <label class="hud-chip-label">🪙 BAND / METAL TONE</label>
+              <div class="hud-select-wrapper">
+                <select id="hud-metal-select" class="hud-select-native">
+                  <option value="Yellow Gold">Yellow Gold</option>
+                  <option value="White Gold">White Gold</option>
+                  <option value="Rose Gold">Rose Gold</option>
+                  <option value="Platinum">Platinum</option>
+                </select>
+                <span class="hud-dropdown-arrow">▾</span>
+              </div>
+            </div>
+
+            <div class="hud-chip-card">
+              <label class="hud-chip-label">💍 BAND ARCHITECTURE</label>
+              <div class="hud-select-wrapper">
+                <select id="hud-arch-select" class="hud-select-native">
+                  <option value="Tapered Shank">Tapered Shank</option>
+                  <option value="Straight Shank">Straight Shank</option>
+                  <option value="Split Shank">Split Shank</option>
+                  <option value="Twisted Shank">Twisted Shank</option>
+                  <option value="Bypass Shank">Bypass Shank</option>
+                </select>
+                <span class="hud-dropdown-arrow">▾</span>
+              </div>
+            </div>
+
+            <div class="hud-chip-card">
+              <label class="hud-chip-label">👑 PRONG SETTING</label>
+              <div class="hud-select-wrapper">
+                <select id="hud-prong-select" class="hud-select-native">
+                  <option value="Hidden Halo">Hidden Halo</option>
+                  <option value="4-Prong Setting">4-Prong Setting</option>
+                  <option value="6-Prong Crown">6-Prong Crown</option>
+                  <option value="Peg Head 4-Prong">Peg Head 4-Prong</option>
+                  <option value="Semi-Bezel">Semi-Bezel</option>
+                  <option value="Bezel Set">Bezel Set</option>
+                </select>
+                <span class="hud-dropdown-arrow">▾</span>
+              </div>
+            </div>
+
+            <div class="hud-chip-card">
+              <label class="hud-chip-label">🏷️ RING STYLE</label>
+              <div class="hud-select-wrapper">
+                <select id="hud-style-select" class="hud-select-native">
+                  <option value="Solitaire">Solitaire</option>
+                  <option value="Three Stone">Three Stone</option>
+                  <option value="Halo">Halo</option>
+                  <option value="Hidden Halo">Hidden Halo</option>
+                  <option value="Vintage">Vintage</option>
+                  <option value="Modern Classic">Modern Classic</option>
+                </select>
+                <span class="hud-dropdown-arrow">▾</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Sub-Header Bar with Count and Capsule Tabs -->
+        <div class="results-header-bar">
+          <div id="results-count-text" class="results-count-text">
+            Found 12 matching rings
+          </div>
+          
+          <div class="view-capsule-tabs">
+            <button id="tab-cards-btn" class="capsule-tab-btn active">Visual Cards</button>
+            <button id="tab-raw-btn" class="capsule-tab-btn">API Response (JSON)</button>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="search-loading" id="search-loading" style="display: none;">
+          <div class="spinner-gold"></div>
+          <div class="loading-text">Analyzing Diamond Ring Anatomy...</div>
+          <div class="loading-subtext">Isolating center stone geometry, band colorimetry, and setting details</div>
+        </div>
+
+        <!-- Initial Empty State -->
+        <div class="search-empty" id="search-empty">
+          <div class="empty-icon">💎</div>
+          <h3>Upload a Ring Image to Start</h3>
+          <p>Drag and drop any ring photo on the left. Click on specific object points or adjust the bounding frame to search specific rings.</p>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div class="results-grid" id="results-cards-grid" style="display: none;">
+          <!-- Dynamically populated product cards -->
+        </div>
+
+        <!-- JSON Output Viewer Tab -->
+        <div class="json-viewer glass-card" id="json-viewer" style="display: none;">
+          <div class="json-header">
+            <span>Nyris & Grown Brilliance API Response Payload</span>
+            <button id="copy-json-action" class="link-btn">Copy JSON</button>
+          </div>
+          <pre id="json-output-text">{}</pre>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- 360 Video Player Modal -->
+  <div class="video-modal-backdrop" id="video-modal-backdrop">
+    <div class="video-modal-container glass-card">
+      <div class="video-modal-header">
+        <h3 id="video-modal-title">360° Ring Preview</h3>
+        <button id="video-modal-close" class="modal-close-btn">✕</button>
+      </div>
+      <div class="video-modal-body">
+        <video id="modal-video" controls loop autoplay playsinline></video>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
